@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Help Me Reclaim My Inherited Property</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #0d6efd; /* Bootstrap blue */
+      color: #fff;
+    }
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      color: #000;
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      margin-bottom: 1rem;
+    }
+    .progress {
+      height: 25px;
+    }
+    .btn-flutterwave {
+      background-color: #ffc107;
+      border: none;
+      font-size: 1.2rem;
+    }
+    .btn-flutterwave:hover {
+      background-color: #e0a800;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-5">
+    <div class="card p-4">
+      <div class="text-center">
+        <img src="your-profile.jpg" alt="Your Profile" class="profile-img" />
+        <h1 class="mb-3">Help Me Reclaim My Inherited Property</h1>
+        <p class="lead">
+          I am currently in a legal battle to reclaim a property my late mother gave me — now under threat from some of my siblings who want to seize and sell it unlawfully.
+          Your donation will help cover the legal fees I need to stand up for my rights and protect what is rightfully mine.
+        </p>
+      </div>
+
+      <div class="text-center mt-4">
+        <h4>Goal: ₦500,000</h4>
+        <div class="progress mb-2">
+          <div id="progressBar" class="progress-bar bg-success" style="width: 25%;">
+            ₦125,000 raised
+          </div>
+        </div>
+        <p><small>Just <strong>50 kind people</strong> giving <strong>₦10,000</strong> each will get us there.</small></p>
+      </div>
+
+      <div class="text-center my-4">
+        <a href="https://sandbox.flutterwave.com/pay/dakkggasxubu"
+           class="btn btn-flutterwave btn-lg"
+           target="_blank">
+          💳 Donate via Flutterwave (Card, Bank, USSD)
+        </a>
+      </div>
+
+      <p class="text-center text-danger"><strong>After donating, please fill out the form below</strong> so I can thank you and keep you updated.</p>
+
+      <!-- Donation Form -->
+      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="mt-4">
+        <div class="mb-3">
+          <label for="name" class="form-label">Your Name</label>
+          <input type="text" name="name" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Your Email</label>
+          <input type="email" name="email" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="amount" class="form-label">Amount Donated</label>
+          <input type="number" name="amount" id="amountInput" class="form-control" placeholder="e.g. 10000" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="message" class="form-label">Message of Support</label>
+          <textarea name="message" class="form-control" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+      <p class="text-muted text-center mt-3">You'll receive a thank you email after submitting the form.</p>
+    </div>
+
+    <footer class="text-center text-white mt-5 py-3">
+      <small>© 2025 - Justice Fundraiser by Chukwuemeka Nwaoha</small>
+    </footer>
+  </div>
+
+  <script>
+    const amountInput = document.getElementById('amountInput');
+    const progressBar = document.getElementById('progressBar');
+    const baseRaised = 125000;
+    const goal = 500000;
+
+    amountInput.addEventListener('input', () => {
+      const donated = parseInt(amountInput.value) || 0;
+      const newTotal = baseRaised + donated;
+      const percentage = Math.min((newTotal / goal) * 100, 100);
+
+      progressBar.style.width = percentage + '%';
+      progressBar.textContent = `₦${newTotal.toLocaleString()} raised`;
+    });
+  </script>
+</body>
+            </html>
+            

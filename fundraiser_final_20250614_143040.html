@@ -1,0 +1,173 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Help Me Reclaim My Inherited Property</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      background-color: #0d6efd;
+      color: #fff;
+    }
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      color: #000;
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #fff;
+      margin-bottom: 1rem;
+    }
+    .progress {
+      height: 25px;
+    }
+    .btn-download {
+      background-color: #198754;
+      color: #fff;
+      border: none;
+    }
+    .btn-download:hover {
+      background-color: #157347;
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-5">
+    <div class="card p-4">
+      <div class="text-center">
+        <img src="https://via.placeholder.com/120" alt="Your Profile" class="profile-img" />
+        <h1 class="mb-3">Help Me Reclaim My Inherited Property</h1>
+        <p class="lead">
+          I am currently in a legal battle to reclaim a property my late mother gave me — now under threat from some of my siblings who want to seize and sell it unlawfully.
+          Your donation will help cover the legal fees I need to stand up for my rights and protect what is rightfully mine.
+        </p>
+      </div>
+
+      <div class="text-center mt-4">
+        <h4>Goal: ₦500,000</h4>
+        <div class="progress mb-2">
+          <div id="progressBar" class="progress-bar bg-success" style="width: 25%;">
+            ₦125,000 raised
+          </div>
+        </div>
+        <p><small>Just <strong>50 kind people</strong> giving <strong>₦10,000</strong> each will get us there.</small></p>
+      </div>
+
+      <div class="text-center my-4">
+        <h5>Transfer to:</h5>
+        <p><strong>Bank:</strong> GTBank</p>
+        <p><strong>Account Number:</strong> 0175080080</p>
+        <p><strong>Account Name:</strong> Chukwuemeka Nwaoha</p>
+      </div>
+
+      <div class="text-center mb-3">
+        <a href="https://wa.me/?text=Support%20my%20legal%20fundraiser%20to%20reclaim%20my%20inherited%20property%20-%20https://your-live-site.netlify.app" 
+           class="btn btn-success" target="_blank">📲 Share on WhatsApp</a>
+      </div>
+
+      <p class="text-center text-danger"><strong>After donating, please fill out the form below</strong> so I can thank you and keep you updated.</p>
+
+      <form id="donationForm" class="mt-4">
+        <div class="mb-3">
+          <label for="name" class="form-label">Your Name</label>
+          <input type="text" name="name" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Your Email</label>
+          <input type="email" name="email" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label for="amount" class="form-label">Amount Donated</label>
+          <input type="number" name="amount" id="amountInput" class="form-control" placeholder="e.g. 10000" required />
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Message of Support</label>
+          <textarea name="message" class="form-control" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-download ms-2" onclick="downloadPDF()">📄 Download PDF</button>
+      </form>
+
+      <p class="text-muted text-center mt-3">You'll receive a thank you email after submitting the form.</p>
+
+      <hr />
+      <h5 class="text-center">🎉 Donor Leaderboard</h5>
+      <ul id="leaderboard" class="list-group list-group-flush mt-3"></ul>
+    </div>
+
+    <footer class="text-center text-white mt-5 py-3">
+      <small>© 2025 - Justice Fundraiser by Chukwuemeka Nwaoha</small>
+    </footer>
+  </div>
+
+  <script>
+    const amountInput = document.getElementById('amountInput');
+    const progressBar = document.getElementById('progressBar');
+    const form = document.getElementById('donationForm');
+    const leaderboard = document.getElementById('leaderboard');
+    const baseRaised = 125000;
+    const goal = 500000;
+
+    amountInput.addEventListener('input', () => {
+      const donated = parseInt(amountInput.value) || 0;
+      const newTotal = baseRaised + donated;
+      const percentage = Math.min((newTotal / goal) * 100, 100);
+      progressBar.style.width = percentage + '%';
+      progressBar.textContent = `₦${newTotal.toLocaleString()} raised`;
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      await fetch("https://sheetdb.io/api/v1/pwnpg9cwe3oi5", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data }),
+      });
+      alert("Thank you! Your donation has been recorded.");
+      form.reset();
+      fetchLeaderboard();
+    });
+
+    async function fetchLeaderboard() {
+      const res = await fetch("https://sheetdb.io/api/v1/pwnpg9cwe3oi5");
+      const donors = await res.json();
+      leaderboard.innerHTML = "";
+      donors.slice(-5).reverse().forEach(d => {
+        const item = document.createElement("li");
+        item.className = "list-group-item";
+        item.textContent = `${d.name} - ₦${parseInt(d.amount || 0).toLocaleString()}`;
+        leaderboard.appendChild(item);
+      });
+    }
+
+    function downloadPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const name = document.querySelector("[name='name']").value;
+      const amount = document.querySelector("[name='amount']").value;
+      const msg = document.querySelector("[name='message']").value;
+      const email = document.querySelector("[name='email']").value;
+
+      doc.text("Donation Receipt", 10, 10);
+      doc.text(`Name: ${name}`, 10, 20);
+      doc.text(`Email: ${email}`, 10, 30);
+      doc.text(`Amount Donated: ₦${amount}`, 10, 40);
+      doc.text(`Message: ${msg}`, 10, 50);
+      doc.text(`Date: ${new Date().toLocaleDateString()}`, 10, 60);
+      doc.text("Thank you for supporting justice!", 10, 70);
+      doc.save("donation_receipt.pdf");
+    }
+
+    fetchLeaderboard();
+  </script>
+</body>
+</html>
